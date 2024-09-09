@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboards - ERP System{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Dashboards</h1>
+
+<!-- Estilo adicional para melhorar o visual dos blocos -->
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<!-- Dashboard de Vendas por Mês -->
+<div class="card shadow-sm mb-4" style="width: 100%; max-width: 500px; margin: auto;">
+    <div class="card-body">
+        <h5 class="card-title">Vendas por Mês</h5>
+        <canvas id="monthlySalesChart" style="max-width: 450px; max-height: 250px;"></canvas> <!-- Aumentando um pouco o tamanho -->
+    </div>
+</div>
+
+<!-- Dashboard de Distribuição de Estoque -->
+<div class="card shadow-sm mb-4" style="width: 100%; max-width: 500px; margin: auto;">
+    <div class="card-body">
+        <h5 class="card-title">Distribuição de Estoque</h5>
+        <canvas id="stockDistributionChart" style="max-width: 450px; max-height: 250px;"></canvas> <!-- Aumentando um pouco o tamanho -->
+    </div>
+</div>
+
+<!-- Dashboard de Desempenho por Funcionário -->
+<div class="card shadow-sm mb-4" style="width: 100%; max-width: 500px; margin: auto;">
+    <div class="card-body">
+        <h5 class="card-title">Desempenho por Funcionário</h5>
+        <canvas id="employeePerformanceChart" style="max-width: 450px; max-height: 250px;"></canvas> <!-- Aumentando um pouco o tamanho -->
+    </div>
+</div>
+
+<!-- Botão de Voltar -->
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Script para gerar os gráficos -->
+<script>
+    // Dados fictícios de exemplo para os dashboards
+    const monthlySalesData = [1200, 1500, 1300, 1700, 1900, 2100];
+    const stockDistributionData = [20, 30, 15, 10, 25];
+    const employeePerformanceData = [80, 90, 75, 85, 70];
+
+    // Gráfico de Vendas por Mês
+    const monthlySalesChart = new Chart(document.getElementById('monthlySalesChart'), {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Vendas por Mês (R$)',
+                data: monthlySalesData,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Gráfico de Distribuição de Estoque
+    const stockDistributionChart = new Chart(document.getElementById('stockDistributionChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Produto A', 'Produto B', 'Produto C', 'Produto D', 'Produto E'],
+            datasets: [{
+                label: 'Quantidade em Estoque',
+                data: stockDistributionData,
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Gráfico de Desempenho por Funcionário
+    const employeePerformanceChart = new Chart(document.getElementById('employeePerformanceChart'), {
+        type: 'radar',
+        data: {
+            labels: ['Funcionário A', 'Funcionário B', 'Funcionário C', 'Funcionário D', 'Funcionário E'],
+            datasets: [{
+                label: 'Desempenho (%)',
+                data: employeePerformanceData,
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
+{% endblock %}

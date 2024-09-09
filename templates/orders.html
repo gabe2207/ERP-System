@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Orders - ERP System{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Order Management</h1>
+
+<!-- Formulário de criação de pedidos -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Create a New Order</h5>
+        <form action="{{ url_for('add_order') }}" method="POST">
+            <div class="mb-3">
+                <label for="product_id" class="form-label">Select Product:</label>
+                <select class="form-select" name="product_id" id="product_id" required>
+                    <option value="">-- Select a Product --</option>
+                    {% for product_id, product in products.items() %}
+                        <option value="{{ product_id }}">{{ product.name }} - Stock: {{ product.quantity }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" class="form-control" name="quantity" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Order</button>
+        </form>
+    </div>
+</div>
+
+<!-- Lista de pedidos existentes -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Existing Orders</h5>
+        <ul class="list-group list-group-flush">
+            {% for order_id, order in orders.items() %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Order ID:</strong> {{ order_id }}<br>
+                        <strong>Product:</strong> {{ products[order.product_id].name }}<br>
+                        <strong>Quantity:</strong> {{ order.quantity }}<br>
+                        <strong>Total:</strong> ${{ order.total_price }}<br>
+                        <strong>Date Created:</strong> {{ order.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
+                        {% if order.finalized %}
+                            <span class="badge bg-success ms-2">Finalized</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if not order.finalized %}
+                            <a href="{{ url_for('finalize_order', order_id=order_id) }}" class="btn btn-success btn-sm">Finalize</a>
+                        {% endif %}
+                        <a href="{{ url_for('delete_order', order_id=order_id) }}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- Botão de Voltar -->
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+{% endblock %}

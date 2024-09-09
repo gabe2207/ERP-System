@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - ERP System{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Product Management</h1>
+
+<!-- Formulário de criação de produtos -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Add a New Product</h5>
+        <form action="{{ url_for('add_product') }}" method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Product Name:</label>
+                <input type="text" class="form-control" name="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description:</label>
+                <input type="text" class="form-control" name="description" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price:</label>
+                <input type="number" class="form-control" step="0.01" name="price" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" class="form-control" name="quantity" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+</div>
+
+<!-- Lista de produtos -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Existing Products</h5>
+        <ul class="list-group list-group-flush">
+            {% for product_id, product in products.items() %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>ID:</strong> {{ product_id }}<br>
+                        <strong>Name:</strong> {{ product.name }}<br>
+                        <strong>Description:</strong> {{ product.description }}<br>
+                        <strong>Price:</strong> ${{ product.price }}<br>
+                        <strong>Stock:</strong> {{ product.quantity }}
+                    </div>
+                    <div>
+                        <a href="{{ url_for('delete_product', id=product_id) }}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- Botão de Voltar -->
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+{% endblock %}

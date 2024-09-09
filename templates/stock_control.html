@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Stock Control - ERP System{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Stock Control</h1>
+
+<!-- Tabela de controle de estoque -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Manage Stock</h5>
+
+        <!-- Tabela de produtos e estoque -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Current Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product_id, product in products.items() %}
+                <tr>
+                    <td>{{ product_id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>
+                        <!-- Botões de controle de estoque -->
+                        <a href="{{ url_for('increase_stock', product_id=product_id) }}" class="btn btn-sm btn-success me-2">Increase</a>
+                        <a href="{{ url_for('decrease_stock', product_id=product_id) }}" class="btn btn-sm btn-warning">Decrease</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Botão de Voltar -->
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+
+{% endblock %}
